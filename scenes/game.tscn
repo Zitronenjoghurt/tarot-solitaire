@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://ndfl2bjpda78"]
+
+[ext_resource type="Script" path="res://scripts/background.gd" id="1_eifrm"]
+
+[sub_resource type="Gradient" id="Gradient_4mamx"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.556863, 0.694118, 0.360784, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_56n40"]
+gradient = SubResource("Gradient_4mamx")
+
+[node name="Game" type="Node2D"]
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_56n40")
+script = ExtResource("1_eifrm")
