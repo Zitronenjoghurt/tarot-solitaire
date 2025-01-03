@@ -1,5 +1,5 @@
 class_name TarotCard
-extends Area2D
+extends Control
 
 enum Suit {
 	MAJOR,
@@ -26,7 +26,7 @@ var face_up: bool = true:
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_enter)
 	mouse_exited.connect(_on_mouse_exit)
-	input_event.connect(_on_input_event)
+	gui_input.connect(_on_gui_input)
 
 func _init(card_resource: CardResource = null) -> void:
 	if card_resource == null:
@@ -41,8 +41,10 @@ func _init(card_resource: CardResource = null) -> void:
 	add_child(sprite)
 	
 	var texture_size = texture.get_size()
-	collision_shape = _setup_collision_shape(texture_size)
-	add_child(collision_shape)
+	custom_minimum_size = texture_size
+	
+	sprite.position = custom_minimum_size / 2
+	sprite.centered = true
 
 func _setup_sprite(texture: Texture) -> AnimatedSprite2D:
 	var frames = SpriteFrames.new()
@@ -68,16 +70,6 @@ func _setup_sprite(texture: Texture) -> AnimatedSprite2D:
 	
 	return card_sprite
 
-func _setup_collision_shape(texture_size: Vector2) -> CollisionShape2D:
-	var shape = RectangleShape2D.new()
-	shape.size = texture_size
-	
-	var card_collision_shape = CollisionShape2D.new()
-	card_collision_shape.shape = shape
-	card_collision_shape.scale = Vector2(0.9, 0.9)
-	
-	return card_collision_shape
-
 func _update_facing() -> void:
 	if face_up:
 		turn_up()
@@ -87,18 +79,24 @@ func _update_facing() -> void:
 # Events
 func _on_mouse_enter() -> void:
 	scale = Vector2(1.05, 1.05)
+	sprite.position = (custom_minimum_size / 2) / scale
 	is_hovered = true
 
 func _on_mouse_exit() -> void:
 	scale = Vector2(1.0, 1.0)
+	sprite.position = custom_minimum_size / 2
 	is_hovered = false
 
-func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_on_left_mouse_click()
 
 func _on_left_mouse_click() -> void:
+	if face_up:
+		turn_down()
+	else:
+		turn_up()
 	emit_signal("clicked", self)
 
 # Animations

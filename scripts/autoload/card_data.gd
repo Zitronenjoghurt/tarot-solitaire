@@ -114,6 +114,9 @@ const TEXTURES_FLASH = [
 	preload("res://assets/animations/tarot__flash_4.png")
 ]
 
+const TEXTURE_PLACEHOLDER_REGULAR = preload("res://assets/tarot__placeholder.png")
+const TEXTURE_PLACEHOLDER_MAJOR = preload("res://assets/tarot__placeholder_major.png")
+
 func get_suit_name(suit: TarotCard.Suit) -> String:
 	match suit:
 		TarotCard.Suit.MAJOR:

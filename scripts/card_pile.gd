@@ -1,5 +1,5 @@
 class_name CardPile
-extends Node2D
+extends TextureRect
 
 enum PileLayout {
 	STACK,
@@ -12,6 +12,12 @@ signal card_clicked(card: TarotCard, pile: CardPile)
 @export var layout: PileLayout = PileLayout.STACK
 
 var card_nodes: Array[TarotCard] = []
+
+func _ready() -> void:
+	var card_node = TarotCard.new()
+	add_child(card_node)
+	card_node.clicked.connect(_on_card_clicked)
+	card_nodes.append(card_node)
 
 func _refresh_from_state() -> void:
 	for card in card_nodes:

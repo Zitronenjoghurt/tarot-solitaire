@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ndfl2bjpda78"]
+[gd_scene load_steps=6 format=3 uid="uid://ndfl2bjpda78"]
 
+[ext_resource type="PackedScene" uid="uid://bt4hmlnx0fohg" path="res://scenes/card_pile.tscn" id="1_464sj"]
 [ext_resource type="Script" path="res://scripts/background.gd" id="1_eifrm"]
+[ext_resource type="Texture2D" uid="uid://bv0gcflflvxhy" path="res://assets/tarot__placeholder_major.png" id="2_oekou"]
 
 [sub_resource type="Gradient" id="Gradient_4mamx"]
 offsets = PackedFloat32Array(0)
@@ -12,6 +14,77 @@ gradient = SubResource("Gradient_4mamx")
 [node name="Game" type="Node2D"]
 
 [node name="GameUI" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="GameBoardContainer" type="VBoxContainer" parent="GameUI"]
+offset_right = 640.0
+offset_bottom = 380.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TopContainer" type="HBoxContainer" parent="GameUI/GameBoardContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.75
+
+[node name="TopGrid" type="GridContainer" parent="GameUI/GameBoardContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 7
+
+[node name="CardPile" parent="GameUI/GameBoardContainer/TopContainer/TopGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile2" parent="GameUI/GameBoardContainer/TopContainer/TopGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile3" parent="GameUI/GameBoardContainer/TopContainer/TopGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile4" parent="GameUI/GameBoardContainer/TopContainer/TopGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile5" parent="GameUI/GameBoardContainer/TopContainer/TopGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+texture = ExtResource("2_oekou")
+
+[node name="CardPile6" parent="GameUI/GameBoardContainer/TopContainer/TopGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile7" parent="GameUI/GameBoardContainer/TopContainer/TopGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="TableauContainer" type="HBoxContainer" parent="GameUI/GameBoardContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TableauGrid" type="GridContainer" parent="GameUI/GameBoardContainer/TableauContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 7
+
+[node name="CardPile" parent="GameUI/GameBoardContainer/TableauContainer/TableauGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile2" parent="GameUI/GameBoardContainer/TableauContainer/TableauGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile3" parent="GameUI/GameBoardContainer/TableauContainer/TableauGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile4" parent="GameUI/GameBoardContainer/TableauContainer/TableauGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile5" parent="GameUI/GameBoardContainer/TableauContainer/TableauGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile6" parent="GameUI/GameBoardContainer/TableauContainer/TableauGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
+
+[node name="CardPile7" parent="GameUI/GameBoardContainer/TableauContainer/TableauGrid" instance=ExtResource("1_464sj")]
+layout_mode = 2
 
 [node name="Background" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_56n40")

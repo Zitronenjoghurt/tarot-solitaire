@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bt4hmlnx0fohg"]
+
+[ext_resource type="Script" path="res://scripts/card_pile.gd" id="1_oechv"]
+[ext_resource type="Texture2D" uid="uid://gwpedjct23" path="res://assets/tarot__placeholder.png" id="2_8y8gh"]
+
+[node name="CardPile" type="TextureRect"]
+self_modulate = Color(1, 1, 1, 0.0980392)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_8y8gh")
+script = ExtResource("1_oechv")
