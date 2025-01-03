@@ -128,7 +128,7 @@ func get_suit_name(suit: TarotCard.Suit) -> String:
 			return "pentacles"
 	return ""
 
-func get_texture(suit: TarotCard.Suit, value: int) -> Texture:
+func get_texture(suit: TarotCard.Suit, value: int) -> Texture2D:
 	var suit_name = get_suit_name(suit)
 	if not TEXTURES.has(suit_name):
 		push_error("Unable to fetch tarot card texture: invalid tarot suit")

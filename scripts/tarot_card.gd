@@ -1,5 +1,5 @@
 class_name TarotCard
-extends AnimatedSprite2D
+extends Area2D
 
 enum Suit {
 	MAJOR,
@@ -9,6 +9,8 @@ enum Suit {
 	PENTACLES
 }
 
+var sprite: AnimatedSprite2D
+var collision_shape: CollisionShape2D
 var suit: Suit
 var value: int
 var face_up: bool = true
@@ -17,9 +19,16 @@ func _init(card_suit: Suit, card_value: int) -> void:
 	suit = card_suit
 	value = card_value
 	
-	var frames = SpriteFrames.new()
+	var texture = CardData.get_texture(suit, value) as Texture2D
+	sprite = _setup_sprite(texture)
+	add_child(sprite)
 	
-	var texture = CardData.get_texture(suit, value)
+	var texture_size = texture.get_size()
+	collision_shape = _setup_collision_shape(texture_size)
+	add_child(collision_shape)
+
+func _setup_sprite(texture: Texture) -> AnimatedSprite2D:
+	var frames = SpriteFrames.new()
 	frames.add_frame("default", texture)
 	
 	frames.add_animation("face_down")
@@ -38,34 +47,48 @@ func _init(card_suit: Suit, card_value: int) -> void:
 		frames.add_frame("flash", flash_texture)
 	frames.add_frame("flash", texture)
 	
-	sprite_frames = frames
+	var card_sprite = AnimatedSprite2D.new()
+	card_sprite.sprite_frames = frames
+	
+	return card_sprite
 
+func _setup_collision_shape(texture_size: Vector2) -> CollisionShape2D:
+	var shape = RectangleShape2D.new()
+	shape.size = texture_size
+	
+	var card_collision_shape = CollisionShape2D.new()
+	card_collision_shape.shape = shape
+	card_collision_shape.scale = Vector2(0.9, 0.9)
+	
+	return card_collision_shape
+
+# Animations
 func turn_up() -> void:
 	if face_up:
 		return
 	
 	face_up = true
-	play("spin")
-	animation_finished.connect(_on_spin_up_finished, CONNECT_ONE_SHOT)
+	sprite.play("spin")
+	sprite.animation_finished.connect(_on_spin_up_finished, CONNECT_ONE_SHOT)
 
 func _on_spin_up_finished() -> void:
-	play("flash")
-	animation_finished.connect(_on_flash_up_finished, CONNECT_ONE_SHOT)
+	sprite.play("flash")
+	sprite.animation_finished.connect(_on_flash_up_finished, CONNECT_ONE_SHOT)
 
 func _on_flash_up_finished() -> void:
-	play("default")
+	sprite.play("default")
 
 func turn_down() -> void:
 	if not face_up:
 		return
 	
 	face_up = false
-	play_backwards("flash")
-	animation_finished.connect(_on_flash_down_finished, CONNECT_ONE_SHOT)
+	sprite.play_backwards("flash")
+	sprite.animation_finished.connect(_on_flash_down_finished, CONNECT_ONE_SHOT)
 
 func _on_flash_down_finished() -> void:
-	play_backwards("spin")
-	animation_finished.connect(_on_spin_down_finished, CONNECT_ONE_SHOT)
+	sprite.play_backwards("spin")
+	sprite.animation_finished.connect(_on_spin_down_finished, CONNECT_ONE_SHOT)
 
 func _on_spin_down_finished() -> void:
-	play("face_down")
+	sprite.play("face_down")
