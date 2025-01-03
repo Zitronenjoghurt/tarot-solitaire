@@ -14,7 +14,8 @@ signal card_clicked(card: TarotCard, pile: CardPile)
 var card_nodes: Array[TarotCard] = []
 
 func _ready() -> void:
-	var card_node = TarotCard.new()
+	# For testing purposes, let it display a random card
+	var card_node = TarotCard.new(CardResource.create_random())
 	add_child(card_node)
 	card_node.clicked.connect(_on_card_clicked)
 	card_nodes.append(card_node)
