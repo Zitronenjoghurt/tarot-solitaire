@@ -9,15 +9,32 @@ enum Suit {
 	PENTACLES
 }
 
+signal clicked(card: TarotCard)
+
 var sprite: AnimatedSprite2D
 var collision_shape: CollisionShape2D
 var suit: Suit
 var value: int
-var face_up: bool = true
+var is_hovered: bool = false
 
-func _init(card_suit: Suit, card_value: int) -> void:
-	suit = card_suit
-	value = card_value
+var face_up: bool = true:
+	set(value):
+		if face_up != value:
+			face_up = value
+			_update_facing()
+
+func _ready() -> void:
+	mouse_entered.connect(_on_mouse_enter)
+	mouse_exited.connect(_on_mouse_exit)
+	input_event.connect(_on_input_event)
+
+func _init(card_resource: CardResource = null) -> void:
+	if card_resource == null:
+		card_resource = CardResource.new()
+	
+	suit = card_resource.suit
+	value = card_resource.value
+	face_up = card_resource.face_up
 	
 	var texture = CardData.get_texture(suit, value) as Texture2D
 	sprite = _setup_sprite(texture)
@@ -45,7 +62,6 @@ func _setup_sprite(texture: Texture) -> AnimatedSprite2D:
 	frames.set_animation_speed("flash", 60.0)
 	for flash_texture in CardData.TEXTURES_FLASH:
 		frames.add_frame("flash", flash_texture)
-	frames.add_frame("flash", texture)
 	
 	var card_sprite = AnimatedSprite2D.new()
 	card_sprite.sprite_frames = frames
@@ -61,6 +77,29 @@ func _setup_collision_shape(texture_size: Vector2) -> CollisionShape2D:
 	card_collision_shape.scale = Vector2(0.9, 0.9)
 	
 	return card_collision_shape
+
+func _update_facing() -> void:
+	if face_up:
+		turn_up()
+	else:
+		turn_down()
+
+# Events
+func _on_mouse_enter() -> void:
+	scale = Vector2(1.05, 1.05)
+	is_hovered = true
+
+func _on_mouse_exit() -> void:
+	scale = Vector2(1.0, 1.0)
+	is_hovered = false
+
+func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_on_left_mouse_click()
+
+func _on_left_mouse_click() -> void:
+	emit_signal("clicked", self)
 
 # Animations
 func turn_up() -> void:

@@ -5,7 +5,7 @@ func _ready() -> void:
 	centered = false
 	
 	# Test card spawning
-	var card = TarotCard.new(TarotCard.Suit.MAJOR, 21)
+	var card = TarotCard.new()
 	card.position = Vector2(100, 100)
 	get_parent().add_child.call_deferred(card)
 	
